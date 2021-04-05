@@ -1,14 +1,14 @@
 <template>
   <div>
-    <v-card class="mx-auto my-12" max-width="374">
-      <v-img height="250" class="my-img" :src="srcimg"></v-img>
+    <v-card class="mx-auto my-12" max-width="292">
+      <v-img class="my-img" :src="poster"></v-img>
 
       <v-card-title>{{ title }}</v-card-title>
 
       <v-card-text>
         <v-row align="center" class="mx-0">
           <v-rating
-            :value="4.5"
+            :value="computedRating"
             color="amber"
             dense
             half-increments
@@ -16,13 +16,13 @@
             size="14"
           ></v-rating>
 
-          <div class="grey--text ml-4">4.5 (413)</div>
+          <div class="grey--text ml-4">{{ computedRating }} ({{ votes }})</div>
         </v-row>
 
-        <div class="my-4 subtitle-1">$ • Scifi, Action</div>
+        <div class="my-4 subtitle-1">{{ released }} • {{ genre }}</div>
 
         <div>
-          {{ description }}
+          {{ plot }}
         </div>
       </v-card-text>
 
@@ -36,13 +36,13 @@
           active-class="deep-purple accent-4 white--text"
           column
         >
-          <v-chip>5:30PM</v-chip>
+          <v-chip disabled>5:30PM</v-chip>
 
           <v-chip>7:30PM</v-chip>
 
           <v-chip>8:00PM</v-chip>
 
-          <v-chip>9:00PM</v-chip>
+          <v-chip disabled>9:00PM</v-chip>
         </v-chip-group>
       </v-card-text>
     </v-card>
@@ -51,24 +51,50 @@
 
 <script>
 export default {
+  Name: "MovieCard",
   data() {
     return {
-      Name: "MovieCard",
       selection: 1
     };
   },
   props: {
-    srcimg: {
+    poster: {
       type: String,
-      default: "https://omdbapi.com/src/poster.jpg"
+      default:
+        "https://m.media-amazon.com/images/M/MV5BNzA1Njg4NzYxOV5BMl5BanBnXkFtZTgwODk5NjU3MzI@._V1_SX300.jpg"
     },
     title: {
       type: String,
-      default: "Movie Name"
+      default: "Blade Runner 2049"
     },
-    description: {
+    released: {
       type: String,
-      default: "Movie Description"
+      default: "2017"
+    },
+    genre: {
+      type: String,
+      default: "Scifi, Action"
+    },
+    director: {
+      type: String,
+      default: "Denis Villeneuve"
+    },
+    rating: {
+      type: Number,
+      default: 8.0
+    },
+    votes: {
+      type: String,
+      default: "468,776"
+    },
+    plot: {
+      type: String,
+      default: "boi chasing some edgy androids"
+    }
+  },
+  computed: {
+    computedRating() {
+      return parseFloat((this.rating / 2).toFixed(2));
     }
   }
 };
